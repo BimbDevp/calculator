@@ -31,3 +31,15 @@ number.forEach(num => {
         }
     })
 })
+
+operator.forEach(op => {
+    op.addEventListener("click", () => {
+    numberOne = returnDisplay.textContent;
+    currentOperator = op.textContent;
+    historyDisplay.textContent = `${numberOne} ${currentOperator}`;
+    resetStatus = true;
+    console.log(numberOne);
+    console.log(currentOperator);
+    })
+})
+
