@@ -19,50 +19,55 @@ const subtract = (numberOne, numberTwo) => numberOne - numberTwo;
 const multiple = (numberOne, numberTwo) => numberOne * numberTwo;
 const division = (numberOne, numberTwo) => numberOne / numberTwo;
 const percent = (number) => number / 100;
-// UI Update Function
 
+// UI Update Function
+function displayUpdate(){
+    returnDisplay.textContent = displayValue;
+    historyDisplay.textContent = `${numberOne} ${currentOperator} ${numberTwo}`;
+}
 
 
 // Event Listener
 number.forEach(num => {
     num.addEventListener("click", () => {
-        if (returnDisplay.textContent == "0" || resetStatus == true) {
-            returnDisplay.textContent = num.textContent;
+        if (displayValue == "0" || resetStatus == true) {
+            displayValue = num.textContent;
             resetStatus = false;
         } else {
-            returnDisplay.textContent += num.textContent;
+            displayValue += num.textContent;
         }
+        displayUpdate();
     })
 })
 
 operator.forEach(op => {
     op.addEventListener("click", () => {
-    numberOne = returnDisplay.textContent;
+    numberOne = displayValue;
     currentOperator = op.textContent;
-    historyDisplay.textContent = `${numberOne} ${currentOperator}`;
+    displayValue = "0";
     resetStatus = true;
-    console.log(numberOne);
-    console.log(currentOperator);
+    displayUpdate();
     })
+    
 })
 
 equal.addEventListener("click", () => {
     if (numberOne != "" && currentOperator != "") {
-        numberTwo = returnDisplay.textContent;
-        historyDisplay.textContent = `${numberOne} ${currentOperator} ${numberTwo}`;
+        numberTwo = displayValue;
         if (currentOperator == "+") {
-            returnDisplay.textContent = add(Number(numberOne), Number(numberTwo));
+            displayValue = add(Number(numberOne), Number(numberTwo));
             
         }
         if (currentOperator == "-") {
-            returnDisplay.textContent = subtract(Number(numberOne), Number(numberTwo));
+            displayValue = subtract(Number(numberOne), Number(numberTwo));
         }
         if (currentOperator == "X") {
-            returnDisplay.textContent = multiple(Number(numberOne), Number(numberTwo)) 
+            displayValue = multiple(Number(numberOne), Number(numberTwo)) 
         }
         if (currentOperator == "/") {
-            returnDisplay.textContent = division(Number(numberOne), Number(numberTwo));
+            displayValue = division(Number(numberOne), Number(numberTwo));
         }
-        
+        resetStatus = true;
+        displayUpdate();
     }   
 })
