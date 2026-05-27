@@ -34,11 +34,20 @@ function displayUpdate(){
 number.forEach(num => {
     if (num.textContent != "."){
         num.addEventListener("click", () => {
+            
+            if (displayValue === "Error") {
+                displayValue = num.textContent;
+                resetStatus = false;
+                displayUpdate();
+                return;
+            }
             if (displayValue == "0" || resetStatus == true ) {
                 displayValue = num.textContent;
                 resetStatus = false;
             } else {
-                displayValue += num.textContent;
+                if (displayValue.replace(".", "").replace("-", "").length < 9) {
+                    displayValue += num.textContent;
+                }
             }
             displayUpdate();
         })
@@ -48,14 +57,15 @@ number.forEach(num => {
 operator.forEach(op => {
     if (op.textContent != "%" && op.textContent != "+/-") {
         op.addEventListener("click", () => {
-        numberOne = displayValue;
-        currentOperator = op.textContent;
-        displayValue = "0";
-        resetStatus = true;
-        displayUpdate();
-        
-        })
-    }
+            if (displayValue === "Error") return;
+            numberOne = displayValue;
+            currentOperator = op.textContent;
+            displayValue = "0";
+            resetStatus = true;
+            displayUpdate();
+            
+            })
+        }
 })
 
 equal.addEventListener("click", () => {
@@ -87,6 +97,7 @@ equal.addEventListener("click", () => {
 })
 
 decimal.addEventListener("click", () => {
+    if (displayValue === "Error") return;
     if (resetStatus == true) {
         displayValue = "0.";
         resetStatus = false;
@@ -98,12 +109,15 @@ decimal.addEventListener("click", () => {
 })
 
 negative.addEventListener("click", () => {
+    if (displayValue === "Error") return;
     let dot = Number(displayValue) * -1;
-    displayValue = String(parseFloat(dot.toFixed(4)));
+    let result = String(parseFloat(dot.toFixed(4)));
+    displayValue = result === "-0" ? "0" : result;
     displayUpdate();
 })
 
 percentBtn.addEventListener("click", () => {
+    if (displayValue === "Error") return;
     let prcn = percent(Number(displayValue));
     displayValue = String(parseFloat(prcn.toFixed(4)));
     displayUpdate();
