@@ -3,6 +3,7 @@ let numberOne = "";
 let numberTwo = "";
 let currentOperator = "";
 let resetStatus = false;
+let displayValue = "0";
 
 // DOM Selectors
 const returnDisplay = document.querySelector(".big-number");
@@ -19,6 +20,8 @@ const multiple = (numberOne, numberTwo) => numberOne * numberTwo;
 const division = (numberOne, numberTwo) => numberOne / numberTwo;
 const percent = (number) => number / 100;
 // UI Update Function
+
+
 
 // Event Listener
 number.forEach(num => {
@@ -43,3 +46,23 @@ operator.forEach(op => {
     })
 })
 
+equal.addEventListener("click", () => {
+    if (numberOne != "" && currentOperator != "") {
+        numberTwo = returnDisplay.textContent;
+        historyDisplay.textContent = `${numberOne} ${currentOperator} ${numberTwo}`;
+        if (currentOperator == "+") {
+            returnDisplay.textContent = add(Number(numberOne), Number(numberTwo));
+            
+        }
+        if (currentOperator == "-") {
+            returnDisplay.textContent = subtract(Number(numberOne), Number(numberTwo));
+        }
+        if (currentOperator == "X") {
+            returnDisplay.textContent = multiple(Number(numberOne), Number(numberTwo)) 
+        }
+        if (currentOperator == "/") {
+            returnDisplay.textContent = division(Number(numberOne), Number(numberTwo));
+        }
+        
+    }   
+})
