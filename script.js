@@ -12,6 +12,9 @@ const number = document.querySelectorAll(".number");
 const operator = document.querySelectorAll(".operator");
 const equal = document.querySelector(".equal");
 const clear = document.querySelector(".clear");
+const decimal = document.querySelector(".decimal");
+const negative = document.querySelector(".negative");
+const percentBtn = document.querySelector(".percent");
 
 // Math Logic Engine
 const add = (numberOne, numberTwo) => numberOne + numberTwo;
@@ -29,26 +32,30 @@ function displayUpdate(){
 
 // Event Listener
 number.forEach(num => {
-    num.addEventListener("click", () => {
-        if (displayValue == "0" || resetStatus == true) {
-            displayValue = num.textContent;
-            resetStatus = false;
-        } else {
-            displayValue += num.textContent;
-        }
-        displayUpdate();
-    })
+    if (num.textContent != "."){
+        num.addEventListener("click", () => {
+            if (displayValue == "0" || resetStatus == true ) {
+                displayValue = num.textContent;
+                resetStatus = false;
+            } else {
+                displayValue += num.textContent;
+            }
+            displayUpdate();
+        })
+    }
 })
 
 operator.forEach(op => {
-    op.addEventListener("click", () => {
-    numberOne = displayValue;
-    currentOperator = op.textContent;
-    displayValue = "0";
-    resetStatus = true;
-    displayUpdate();
-    })
-    
+    if (op.textContent != "%" && op.textContent != "+/-") {
+        op.addEventListener("click", () => {
+        numberOne = displayValue;
+        currentOperator = op.textContent;
+        displayValue = "0";
+        resetStatus = true;
+        displayUpdate();
+        
+        })
+    }
 })
 
 equal.addEventListener("click", () => {
@@ -65,9 +72,48 @@ equal.addEventListener("click", () => {
             displayValue = multiple(Number(numberOne), Number(numberTwo)) 
         }
         if (currentOperator == "/") {
-            displayValue = division(Number(numberOne), Number(numberTwo));
-        }
+            if (Number(numberTwo) === 0) {
+                displayValue = "Error";
+            }else {
+                displayValue = division(Number(numberOne), Number(numberTwo));
+        }}
+        if (displayValue != "Error") {
+            let fixed = Number(displayValue)
+            displayValue = String(parseFloat(fixed.toFixed(4)));
+            }
         resetStatus = true;
         displayUpdate();
     }   
+})
+
+decimal.addEventListener("click", () => {
+    if (resetStatus == true) {
+        displayValue = "0.";
+        resetStatus = false;
+    } else if (!displayValue.includes(".")) {
+        displayValue += ".";
+         
+    }
+    displayUpdate()
+})
+
+negative.addEventListener("click", () => {
+    let dot = Number(displayValue) * -1;
+    displayValue = String(parseFloat(dot.toFixed(4)));
+    displayUpdate();
+})
+
+percentBtn.addEventListener("click", () => {
+    let prcn = percent(Number(displayValue));
+    displayValue = String(parseFloat(prcn.toFixed(4)));
+    displayUpdate();
+})
+
+clear.addEventListener("click", () => {
+    displayValue = "0";
+    numberOne = "";
+    numberTwo = "";
+    currentOperator = "";
+    resetStatus = false;
+    displayUpdate();
 })
